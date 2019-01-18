@@ -1,0 +1,55 @@
+{
+    "env": {
+        "es6": true,
+        "browser": true,
+        "node": true
+    },
+    "parserOptions": {
+        "sourceType": "module",
+        "ecmaVersion": 8
+    },
+    "extends": "eslint:recommended",
+    "rules": {
+        "indent": [
+            "error",
+            "tab"
+        ],
+        "linebreak-style": [
+            "off"
+        ],
+        "quotes": [
+            "warn",
+            "double"
+        ],
+        "semi": [
+            "warn",
+            "always"
+        ],
+        "no-console": [
+            "off"
+        ],
+        "no-unused-vars": [
+            "warn"
+        ],
+        "no-var": [
+            "warn"
+        ],
+		"no-trailing-spaces": [
+			"warn"
+		],
+		"prefer-const": [
+			"warn"
+        ]
+    },
+    "globals": {
+		"findModule": false,
+		"findModules": false,
+		"findRawModule": false,
+		"monkeyPatch": false,
+		"req": false,
+		"webpackJsonp": false,
+        "ED": false,
+        "EDApi": false,
+        "_": false
+    }
+}
