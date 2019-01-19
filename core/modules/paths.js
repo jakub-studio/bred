@@ -3,6 +3,7 @@ const base = process.env.injDir;
 const util = require("./util");
 
 const paths = {
+	root: base,
 	core: join(base, "core"),
 	components: join(base, "core", "components"),
 	modules: join(base, "core", "modules"),

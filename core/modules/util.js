@@ -2,6 +2,7 @@
 const { readdir, readFile } = require("fs");
 const { parse, join, dirname } = require("path");
 const NodeJSModule = require("module");
+const constants = require("./constants");
 
 const utils = {
 	/**
@@ -22,12 +23,12 @@ const utils = {
 	 * @param {string} format String to be formatted
 	 * @param {{}} data Object with the data
 	 * @example
-	 * util.formatString("Hi {name}", {user: "John"})
+	 * util.formatString("Hi {{name}}", {name: "John"})
 	 * // Returns "Hi John"
 	 */
-	fornatString(format, data) {
+	formatString(format, data) {
 		for (const val in data) {
-			format = format.replace(new RegExp(`\\{\\{${_.escapeRegExp(val)}\\}\\}`, "g"), data[val]);
+			format = format.replace(new RegExp(`\\{\\{${val}\\}\\}`, "g"), data[val]);
 		}
 		return format;
 	},
@@ -154,12 +155,17 @@ const utils = {
 
 		return require;
 	},
-	deprecate(thing) {
-		const originalThing = thing;
-		thing = (...args) => {
-			console.warn("Usage of ",thing.name,"is deprecated. Please switch to an alternative method as it will get removed in the future");
-			originalThing(...args);
+	parseVersion(v) {
+		// eslint-disable-next-line no-useless-escape
+		const parsed = /^@(\w+)\/(\w+)-([\d\.]+)$/.exec(v);
+		return {
+			fork: parsed[1],
+			channel: parsed[2],
+			version: parsed[3]
 		};
+	},
+	sleep(ms) {
+		return new Promise(res => setTimeout(res, ms));
 	}
 };
 

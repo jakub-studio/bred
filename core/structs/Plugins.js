@@ -1,4 +1,11 @@
-const util = require("../modules/util");
+const {formatString, requireAsync} = require("../modules/util");
+const { promisify } = require("util");
+const _fs = require("fs");
+
+const fs = {
+	readdir: promisify(_fs.readdir),
+	readFile: promisify(_fs.readFile)
+};
 
 class Plugins extends Array {
 	constructor(dir) {
@@ -8,11 +15,14 @@ class Plugins extends Array {
 			dir
 		}, enumerable: false});
 	}
-	loadAllPlugins() {
-
+	async loadAllPlugins() {
+		const plugins = await fs.readdir(this._.dir, {encoding: "utf-8"});
+		for (const plugin of plugins) {
+			await this.loadPlugin(plugin);
+		}
 	}
-	loadPlugin(fileName) {
-
+	async loadPlugin(fileName) {
+		const path = join()
 	}
 	_loadPlugin(pluginExports) {
 
@@ -23,11 +33,11 @@ class Plugins extends Array {
 	getPlugin(pluginIDorName) {
 		return this.find(plugin => plugin.id === pluginIDorName || plugin.name === pluginIDorName);
 	}
-	get pluginsAreLoaded() {
-		return this._.pluginsAreLoading;
+	get pluginsHaveLoaded() {
+		return this._.pluginsHaveLoaded;
 	}
-	toString(format="{name}, ") {
-		return this.map(plugin => util.formatString(format, plugin)).join("");
+	toString(format="{{name}}, ") {
+		return this.map(plugin => formatString(format, plugin)).join("");
 	}
 }
 
