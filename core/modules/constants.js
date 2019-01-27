@@ -5,6 +5,11 @@ const constants = {
 	SYMBOLS_PREFIX: "bred",
 	VERSION: "@bred/alpha-1.0.0",
 	WEBPACK_REQUIRE_CACHE_MIN: 5000,
+	strings: {
+		deprecationNotices: {
+			GLOBAL_MONKEY_PATCH: "Plugin.prototype.patcher will become the new way to go for monkeyPatching methods, see the plugin wiki on the github repo."
+		}
+	},
 	errorMsgs: {
 		get LOAD_ABORT_PREFIX () {
 			return `${constants.FORK_NAME} loading was aborted.\nReason: `;

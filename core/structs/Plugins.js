@@ -1,4 +1,5 @@
 const {formatString, requireAsync} = require("../modules/util");
+const internal = require("../modules/symbols").pluginsArrInternal;
 const { promisify } = require("util");
 const _fs = require("fs");
 
@@ -7,16 +8,18 @@ const fs = {
 	readFile: promisify(_fs.readFile)
 };
 
+const getInternal = t => t[internal];
+
 class Plugins extends Array {
 	constructor(dir) {
 		super();
-		Object.defineProperty(this, "_", {value: {
+		Object.defineProperty(this, internal, {value: {
 			pluginsHaveLoaded: false,
 			dir
 		}, enumerable: false});
 	}
-	async loadAllPlugins() {
-		const plugins = await fs.readdir(this._.dir, {encoding: "utf-8"});
+	async loadAll() {
+		const plugins = await fs.readdir(getInternal(this).dir, {encoding: "utf-8"});
 		for (const plugin of plugins) {
 			await this.loadPlugin(plugin);
 		}
@@ -34,7 +37,7 @@ class Plugins extends Array {
 		return this.find(plugin => plugin.id === pluginIDorName || plugin.name === pluginIDorName);
 	}
 	get pluginsHaveLoaded() {
-		return this._.pluginsHaveLoaded;
+		return getInternal(this).dir;
 	}
 	toString(format="{{name}}, ") {
 		return this.map(plugin => formatString(format, plugin)).join("");

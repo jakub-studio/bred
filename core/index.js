@@ -11,6 +11,7 @@
 	const paths = require("./modules/paths");
 	const symbols = require("./modules/symbols");
 	const PluginArr = require("./structs/Plugins");
+	const moduleResolvers = require("./modules/webpack_module_resolvers");
 
 	window.ED = util.createNamedObject("🍞", {
 		version: constants.VERSION,
@@ -29,10 +30,14 @@
 	process.once("loaded", async () => {
 		console.info(constants.template("CONSOLE_GENERIC", {msg: `Loading version: ${constants.VERSION}`}));
 
-		while (window.webpackJsonp === void 0) await util.sleep(500); // Wait until webpack modules begin loading
+		while (typeof window.webpackJsonp === "undefined") await util.sleep(1000); // Wait until webpack modules begin loading
 
-		window.ED.discordWebSocket = window._ws;
+		ED.discordWebSocket = window._ws;
+		moduleResolvers.insert();
 
-		window.ED.loaded = true;
+		ED.corePlugins.requireAll();
+		ED.plugins.requireAll();
+
+		ED.loaded = true;
 	});
 })();

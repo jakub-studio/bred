@@ -166,6 +166,9 @@ const utils = {
 	},
 	sleep(ms) {
 		return new Promise(res => setTimeout(res, ms));
+	},
+	deprecate(args, reason) {
+		console.warn(`Warning: ${args.callee.name} is now deprecated and may be removed from the client in the future. Please switch to alternate methods. ${reason ? "\nReason: "+reason : ""}`);
 	}
 };
 
